@@ -1,81 +1,112 @@
 import React from 'react';
+import { 
+  Building2, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  ShieldCheck, 
+  FileText,
+  ExternalLink
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#0A0A0A] dark:bg-[#0A0A0A] light:bg-[#FAFAFA] pt-16 pb-12 text-xs font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#737373] transition-colors">
-      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-[#262626] dark:border-[#262626] light:border-[#E5E5E5]">
-          {/* Brand & Manifesto */}
-          <div className="md:col-span-1 space-y-3">
-            <div className="flex items-baseline gap-2">
-              <span className="font-bold text-white dark:text-white light:text-[#171717] uppercase text-sm tracking-tight">SOVEREIGN</span>
-              <span className="text-[#F97316]">// OS</span>
+    <footer id="contact" className="bg-[#0B1B3D] text-slate-300 font-sans text-xs relative">
+      {/* Indian Tricolor Stripe */}
+      <div className="h-1.5 w-full bg-gradient-to-r from-[#FF9933] via-white to-[#138808]"></div>
+      {/* Upper Footer: Official Links & Contact */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          
+          {/* Identity */}
+          <div className="space-y-3 md:col-span-1">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded bg-white text-[#0E2A5C] flex items-center justify-center font-bold">
+                <Building2 className="w-5 h-5 text-[#0E2A5C]" />
+              </div>
+              <div>
+                <span className="text-base font-bold text-white tracking-tight font-serif block">
+                  SOVEREIGN
+                </span>
+                <span className="text-[10px] text-orange-400 uppercase font-semibold tracking-wider block -mt-1">
+                  AI WORKSPACE
+                </span>
+              </div>
             </div>
-            <p className="text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] text-xs leading-relaxed font-sans">
-              The air-gapped operating system for confidential enterprise intelligence. 
-              Running entirely on your organization’s infrastructure.
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Air-gapped on-premise artificial intelligence platform engineered for Indian Government ministries, public sector enterprises, and defense organizations.
             </p>
             <div className="pt-2">
-              <span className="text-[10px] text-emerald-400 dark:text-emerald-400 light:text-emerald-700 bg-emerald-950/60 dark:bg-emerald-950/60 light:bg-emerald-50 px-2 py-0.5 rounded border border-emerald-800/40 dark:border-emerald-800/40 light:border-emerald-200">
-                0 OUTBOUND TOKENS
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-blue-950 border border-blue-800 text-emerald-400 text-[11px] font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                National Enclave Active
               </span>
             </div>
           </div>
 
-          {/* Column 1: Skills */}
+          {/* Quick Access Portal Links */}
           <div>
-            <h4 className="font-bold text-white dark:text-white light:text-[#171717] uppercase tracking-wider mb-3">
-              // Agents
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-3 font-serif">
+              Portal Services
             </h4>
-            <ul className="space-y-2 text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252]">
-              <li><Link to="/workspace" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">// 00 Auto Router</Link></li>
-              <li><Link to="/workspace" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">// 01 Inspection Agent</Link></li>
-              <li><Link to="/workspace" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">// 02 Software Engineer</Link></li>
-              <li><Link to="/workspace" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">// 03 Data Analyst</Link></li>
-              <li><Link to="/workspace" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">// 04 Presentation</Link></li>
-              <li><Link to="/workspace" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">// 05 Finance & TCO</Link></li>
+            <ul className="space-y-2 text-slate-300">
+              <li><Link to="/login/employee" className="hover:text-amber-400 transition-colors">Employee Portal</Link></li>
+              <li><Link to="/login/admin" className="hover:text-amber-400 transition-colors">Admin Control Center</Link></li>
+              <li><Link to="/workspace" className="hover:text-amber-400 transition-colors">Workspace Sandbox</Link></li>
+              <li><Link to="/documents" className="hover:text-amber-400 transition-colors">Document OCR Vault</Link></li>
+              <li><Link to="/knowledge" className="hover:text-amber-400 transition-colors">Organizational Knowledge</Link></li>
             </ul>
           </div>
 
-          {/* Column 2: Evidence */}
+          {/* Compliance & Standards */}
           <div>
-            <h4 className="font-bold text-white dark:text-white light:text-[#171717] uppercase tracking-wider mb-3">
-              // Evidence
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-3 font-serif">
+              Standards & Security
             </h4>
-            <ul className="space-y-2 text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252]">
-              <li><Link to="/security" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">Air-Gap Topology</Link></li>
-              <li><Link to="/documents" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">Document OCR Vault</Link></li>
-              <li><Link to="/knowledge" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">Organizational Brain</Link></li>
-              <li><Link to="/activity" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">Audit Logs</Link></li>
-              <li><Link to="/models" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">Local GPU Memory</Link></li>
-              <li><Link to="/tools" className="hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:underline">WASM Sandboxes</Link></li>
+            <ul className="space-y-2 text-slate-300">
+              <li>Bureau of Indian Standards (BIS)</li>
+              <li>CERT-In Security Framework</li>
+              <li>100% On-Premise GPU Enclave</li>
+              <li>Hardware Cryptographic HSM</li>
+              <li>Tamper-Proof Audit Ledger</li>
             </ul>
           </div>
 
-          {/* Column 3: Status */}
+          {/* Contact / Official Desk */}
           <div>
-            <h4 className="font-bold text-white dark:text-white light:text-[#171717] uppercase tracking-wider mb-3">
-              // Architecture
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-3 font-serif">
+              Nodal Contact
             </h4>
-            <ul className="space-y-2 text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252]">
-              <li>On-Premises Hardware Enclave</li>
-              <li>NVIDIA TensorRT-LLM (Local)</li>
-              <li>Vector Qdrant HNSW</li>
-              <li>Surya Neural OCR Engine</li>
-              <li>Zero External API Dependencies</li>
-            </ul>
+            <div className="space-y-2.5 text-slate-300">
+              <p className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
+                <span>National Supercomputing Complex, Institutional Area, New Delhi, India</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-orange-400 flex-shrink-0" />
+                <span>sovereign-desk@nic.in (Simulated)</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-orange-400 flex-shrink-0" />
+                <span>Toll-Free Helpline: 1800-11-SOV-AI</span>
+              </p>
+            </div>
           </div>
+
         </div>
+      </div>
 
-        {/* Base line like Snitch */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
+      {/* Bottom Strip: Disclaimer & Copyright */}
+      <div className="bg-[#07132C] py-4 px-4 border-t border-blue-900/60 text-slate-400 text-[11px]">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <div>
-            © 2026 Sovereign AI Workspace · strictly on-premises & confidential
+            © 2026 Sovereign AI Workspace. Prototype design inspired by modern Indian Government digital infrastructure.
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-emerald-400 dark:text-emerald-400 light:text-emerald-700">● AIR-GAP ENFORCED</span>
-            <span>no server · no telemetry · your own hardware</span>
+            <span className="text-slate-500">Air-Gapped & Auditable</span>
+            <span>•</span>
+            <span className="text-emerald-400">Strictly Internal Network</span>
           </div>
         </div>
       </div>

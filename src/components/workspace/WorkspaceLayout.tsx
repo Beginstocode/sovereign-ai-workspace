@@ -33,8 +33,8 @@ export const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
   const [isSecurityModalOpen, setIsSecurityModalOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-[#0A0A0A] dark:bg-[#0A0A0A] light:bg-[#FFFFFF] text-[#EDEDED] dark:text-[#EDEDED] light:text-[#171717] overflow-hidden font-sans transition-colors">
-      {/* Left Sidebar */}
+    <div className="flex h-screen bg-[#0D0D0D] text-white overflow-hidden font-sans">
+      {/* Left Sidebar - MyGov Themed */}
       <Sidebar
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -42,6 +42,8 @@ export const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
         onOpenSecurityModal={() => setIsSecurityModalOpen(true)}
         onSelectChatSession={onSelectChatSession}
         activeSessionId={activeSessionId}
+        onSelectAgent={onSelectAgent}
+        activeAgent={activeAgent}
       />
 
       {/* Main Content Area */}
@@ -50,7 +52,7 @@ export const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
           sidebarCollapsed ? 'ml-16' : 'ml-64'
         }`}
       >
-        {/* Top bar */}
+        {/* Top bar with Indian Tricolor Accent & MyGov Controls */}
         <TopBar
           sidebarCollapsed={sidebarCollapsed}
           onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -65,7 +67,7 @@ export const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
         />
 
         {/* Dynamic Page or Chat Content */}
-        <main className="flex-1 overflow-hidden relative flex flex-col bg-[#0A0A0A] dark:bg-[#0A0A0A] light:bg-[#FFFFFF]">
+        <main className="flex-1 overflow-hidden relative flex flex-col bg-[#0D0D0D]">
           {children}
         </main>
       </div>
@@ -100,3 +102,5 @@ export const WorkspaceLayout: React.FC<WorkspaceLayoutProps> = ({
     </div>
   );
 };
+
+export default WorkspaceLayout;

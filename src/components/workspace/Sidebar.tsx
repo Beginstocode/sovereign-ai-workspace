@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  Plus, 
-  Search, 
-  Pin, 
-  Trash2, 
-  ArrowLeft
+import {
+  Plus,
+  Search,
+  MessageSquare,
+  FolderKanban,
+  FileText,
+  Database,
+  ShieldCheck,
+  Activity,
+  Settings,
+  Bot,
+  LogOut,
 } from 'lucide-react';
 import { INITIAL_CHAT_SESSIONS } from '../../data/mockData';
-import { ChatSession } from '../../types';
+import { ChatSession, Agent } from '../../types';
+import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -17,6 +24,8 @@ interface SidebarProps {
   onOpenSecurityModal: () => void;
   onSelectChatSession?: (session: ChatSession) => void;
   activeSessionId?: string;
+  onSelectAgent?: (agent: Agent) => void;
+  activeAgent?: Agent;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -25,210 +34,218 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNewChat,
   onOpenSecurityModal,
   onSelectChatSession,
-  activeSessionId
+  activeSessionId,
+  onSelectAgent,
+  activeAgent,
 }) => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
-  const [sessions, setSessions] = useState<ChatSession[]>(INITIAL_CHAT_SESSIONS);
+  const [sessions] = useState<ChatSession[]>(INITIAL_CHAT_SESSIONS);
 
-  // Filter sessions by search query
-  const filteredSessions = sessions.filter((s) =>
-    s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    s.preview.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    s.agentName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filtered = sessions.filter(
+    (s) =>
+      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.agentName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const pinnedSessions = filteredSessions.filter((s) => s.isPinned);
-  const todaySessions = filteredSessions.filter((s) => !s.isPinned && s.dateGroup === 'Today');
-  const yesterdaySessions = filteredSessions.filter((s) => !s.isPinned && s.dateGroup === 'Yesterday');
-  const olderSessions = filteredSessions.filter((s) => !s.isPinned && s.dateGroup === 'Previous 7 Days');
+  const today = filtered.slice(0, 3);
+  const yesterday = filtered.slice(3, 6);
+  const older = filtered.slice(6);
 
-  const handleTogglePin = (e: React.MouseEvent, sessionId: string) => {
-    e.stopPropagation();
-    setSessions((prev) =>
-      prev.map((s) => (s.id === sessionId ? { ...s, isPinned: !s.isPinned } : s))
-    );
-  };
-
-  const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
-    e.stopPropagation();
-    setSessions((prev) => prev.filter((s) => s.id !== sessionId));
-  };
-
-  const navItems = [
-    { name: 'Agents', path: '/agents', label: '// 01 Agents' },
-    { name: 'Documents', path: '/documents', label: '// 02 Docs' },
-    { name: 'Knowledge', path: '/knowledge', label: '// 03 Brain' },
-    { name: 'Security', path: '/security', label: '// 04 Security' }
+  const navLinks = [
+    { name: 'Projects', path: '/projects', icon: FolderKanban, color: 'text-[#428DCC]' },
+    { name: 'Documents', path: '/documents', icon: FileText, color: 'text-[#EE7027]' },
+    { name: 'Knowledge', path: '/knowledge', icon: Database, color: 'text-[#1DB999]' },
+    { name: 'AI Agents', path: '/agents', icon: Bot, color: 'text-[#C2579C]' },
+    { name: 'Activity Log', path: '/activity', icon: Activity, color: 'text-blue-400' },
+    { name: 'Security', path: '/security', icon: ShieldCheck, color: 'text-emerald-500' },
+    { name: 'Admin Console', path: '/admin', icon: Settings, color: 'text-slate-400' },
   ];
 
-  const renderSessionItem = (session: ChatSession) => {
-    const isActive = activeSessionId === session.id;
+  const SessionItem = ({ session }: { session: ChatSession }) => {
+    const isActive = session.id === activeSessionId;
     return (
-      <div
-        key={session.id}
+      <button
         onClick={() => onSelectChatSession && onSelectChatSession(session)}
-        className={`group relative flex items-center justify-between px-2.5 py-1.5 rounded cursor-pointer transition-colors text-xs font-mono ${
+        className={`w-full group flex items-center gap-2 px-2.5 py-2 rounded-lg text-left transition-colors text-xs ${
           isActive
-            ? 'bg-[#1E1E1E] dark:bg-[#1E1E1E] light:bg-[#F0F0F0] text-white dark:text-white light:text-black font-medium border border-[#333333] dark:border-[#333333] light:border-[#D4D4D4]'
-            : 'text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] hover:bg-[#141414] dark:hover:bg-[#141414] light:hover:bg-[#F9F9F9] hover:text-white dark:hover:text-white light:hover:text-black'
+            ? 'bg-white/10 text-white font-semibold'
+            : 'text-white/40 hover:bg-white/5 hover:text-white/70'
         }`}
       >
-        <div className="truncate flex-1 mr-2">
-          <span className="truncate block">{session.title}</span>
-          <span className="text-[10px] text-[#737373] block truncate">
-            {session.agentName.split(' ')[0]} · {session.timestamp}
-          </span>
-        </div>
-
-        {/* Action icons on hover */}
-        <div className="hidden group-hover:flex items-center gap-1 flex-shrink-0">
-          <button
-            onClick={(e) => handleTogglePin(e, session.id)}
-            className="p-1 rounded text-[#737373] hover:text-white dark:hover:text-white light:hover:text-black"
-            title={session.isPinned ? 'Unpin' : 'Pin'}
-          >
-            <Pin className="w-2.5 h-2.5" />
-          </button>
-          <button
-            onClick={(e) => handleDeleteSession(e, session.id)}
-            className="p-1 rounded text-[#737373] hover:text-red-400"
-            title="Delete session"
-          >
-            <Trash2 className="w-2.5 h-2.5" />
-          </button>
-        </div>
-      </div>
+        <MessageSquare className="w-3.5 h-3.5 flex-shrink-0 text-white/20 group-hover:text-white/40 transition-colors" />
+        <span className="flex-1 truncate">{session.title}</span>
+      </button>
     );
   };
 
-  return (
-    <aside
-      className={`fixed left-0 top-0 bottom-0 z-40 flex flex-col bg-[#0A0A0A] dark:bg-[#0A0A0A] light:bg-[#FFFFFF] border-r border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] transition-all duration-300 font-mono ${
-        collapsed ? 'w-16' : 'w-64'
-      }`}
-    >
-      {/* Brand Header */}
-      <div className="p-3.5 border-b border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] flex items-center justify-between">
-        {!collapsed ? (
-          <Link to="/" className="flex items-baseline gap-2">
-            <span className="font-bold text-white dark:text-white light:text-black text-sm tracking-tight">SOVEREIGN</span>
-            <span className="text-[10px] text-[#F97316]">// OS</span>
+  if (collapsed) {
+    return (
+      <aside className="fixed left-0 top-0 bottom-0 z-40 w-16 flex flex-col bg-[#111111] border-r border-white/5">
+        {/* Logo */}
+        <div className="p-3 border-b border-white/5 flex justify-center">
+          <Link to="/" className="w-9 h-9 rounded-lg bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-base">
+            🏛️
           </Link>
-        ) : (
-          <Link to="/" className="mx-auto font-bold text-white text-xs">SV</Link>
-        )}
+        </div>
+        {/* New Chat */}
+        <div className="p-3 border-b border-white/5 flex justify-center">
+          <button
+            onClick={onNewChat}
+            className="w-9 h-9 rounded-lg bg-[#EE7027]/10 border border-[#EE7027]/20 flex items-center justify-center hover:bg-[#EE7027]/20 transition-colors"
+            title="New Chat"
+          >
+            <Plus className="w-4 h-4 text-[#EE7027]" />
+          </button>
+        </div>
+        {/* Nav Icons */}
+        <div className="flex-1 px-2 py-2 space-y-1">
+          {navLinks.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                title={item.name}
+                className={`flex items-center justify-center w-10 h-9 mx-auto rounded-lg transition-colors ${
+                  isActive ? 'bg-white/10' : 'hover:bg-white/5'
+                }`}
+              >
+                <Icon className={`w-4 h-4 ${item.color}`} />
+              </Link>
+            );
+          })}
+        </div>
+        {/* User dot */}
+        <div className="p-3 border-t border-white/5 flex justify-center">
+          <div className="w-7 h-7 rounded-full bg-[#133863] text-white flex items-center justify-center text-[10px] font-bold">
+            {user?.avatarInitials || 'U'}
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
+  return (
+    <aside className="fixed left-0 top-0 bottom-0 z-40 w-64 flex flex-col bg-[#111111] border-r border-white/5 font-sans">
+
+      {/* Header */}
+      <div className="px-4 pt-4 pb-3 border-b border-white/5 flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 rounded-lg bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-sm">
+            🏛️
+          </div>
+          <div>
+            <div className="text-sm font-semibold text-white">Sovereign AI</div>
+            <div className="text-[10px] text-white/30 font-medium">Workspace</div>
+          </div>
+        </Link>
       </div>
 
-      {/* New Chat Button */}
-      <div className="p-3">
+      {/* New Chat */}
+      <div className="px-3 pt-3 pb-2">
         <button
           onClick={onNewChat}
-          className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#FAFAFA] hover:border-[#525252] text-white dark:text-white light:text-black text-xs font-mono transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-[#1A1A1A] border border-white/10 text-white/70 hover:text-white hover:border-white/20 hover:bg-[#222] font-medium text-xs transition-all"
         >
-          <Plus className="w-3.5 h-3.5 text-[#F97316]" />
-          {!collapsed && <span>New Session</span>}
+          <Plus className="w-4 h-4 text-[#EE7027]" />
+          <span>New Chat</span>
         </button>
       </div>
 
-      {/* Search Bar */}
-      {!collapsed && (
-        <div className="px-3 mb-2">
-          <div className="relative">
-            <Search className="w-3 h-3 text-[#737373] absolute left-2.5 top-2.5" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search sessions..."
-              className="w-full bg-[#141414] dark:bg-[#141414] light:bg-[#F9F9F9] border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] rounded pl-7 pr-3 py-1 text-xs text-white dark:text-white light:text-black placeholder-[#737373] focus:outline-none focus:border-[#525252]"
-            />
-          </div>
+      {/* Search */}
+      <div className="px-3 pb-3">
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/20" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-8 pr-3 py-2 rounded-lg bg-[#1A1A1A] border border-white/5 text-xs text-white/60 placeholder-white/20 focus:outline-none focus:border-white/20 transition-all"
+          />
         </div>
-      )}
-
-      {/* Chat History List */}
-      <div className="flex-1 overflow-y-auto px-3 space-y-4 text-xs">
-        {!collapsed ? (
-          <>
-            {pinnedSessions.length > 0 && (
-              <div>
-                <span className="text-[10px] text-[#737373] uppercase tracking-wider block mb-1">
-                  // Pinned
-                </span>
-                <div className="space-y-1">
-                  {pinnedSessions.map(renderSessionItem)}
-                </div>
-              </div>
-            )}
-
-            {todaySessions.length > 0 && (
-              <div>
-                <span className="text-[10px] text-[#737373] uppercase tracking-wider block mb-1">
-                  // Today
-                </span>
-                <div className="space-y-1">
-                  {todaySessions.map(renderSessionItem)}
-                </div>
-              </div>
-            )}
-
-            {yesterdaySessions.length > 0 && (
-              <div>
-                <span className="text-[10px] text-[#737373] uppercase tracking-wider block mb-1">
-                  // Yesterday
-                </span>
-                <div className="space-y-1">
-                  {yesterdaySessions.map(renderSessionItem)}
-                </div>
-              </div>
-            )}
-
-            {olderSessions.length > 0 && (
-              <div>
-                <span className="text-[10px] text-[#737373] uppercase tracking-wider block mb-1">
-                  // Previous 7 Days
-                </span>
-                <div className="space-y-1">
-                  {olderSessions.map(renderSessionItem)}
-                </div>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="text-center text-[#737373] text-[10px] pt-4">
-            ...
-          </div>
-        )}
       </div>
 
-      {/* Bottom Nav Links */}
-      <div className="p-3 border-t border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] space-y-1">
-        {!collapsed ? (
-          navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`block px-2.5 py-1 rounded text-xs transition-colors ${
-                location.pathname === item.path
-                  ? 'text-white dark:text-white light:text-black font-semibold bg-[#1E1E1E] dark:bg-[#1E1E1E] light:bg-[#F0F0F0]'
-                  : 'text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] hover:text-white dark:hover:text-white light:hover:text-black hover:bg-[#141414] dark:hover:bg-[#141414] light:hover:bg-[#F9F9F9]'
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))
-        ) : null}
+      {/* Chat History */}
+      <div className="flex-1 overflow-y-auto px-2 scrollbar-none">
 
-        <Link
-          to="/"
-          className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-[#737373] hover:text-white dark:hover:text-white light:hover:text-black transition-colors"
-        >
-          <ArrowLeft className="w-3 h-3" />
-          {!collapsed && <span>Landing Page</span>}
-        </Link>
+        {today.length > 0 && (
+          <div className="mb-3">
+            <div className="px-2.5 py-1 text-[10px] font-semibold text-white/20 uppercase tracking-wider">Today</div>
+            <div className="space-y-0.5">
+              {today.map((s) => <SessionItem key={s.id} session={s} />)}
+            </div>
+          </div>
+        )}
+
+        {yesterday.length > 0 && (
+          <div className="mb-3">
+            <div className="px-2.5 py-1 text-[10px] font-semibold text-white/20 uppercase tracking-wider">Yesterday</div>
+            <div className="space-y-0.5">
+              {yesterday.map((s) => <SessionItem key={s.id} session={s} />)}
+            </div>
+          </div>
+        )}
+
+        {older.length > 0 && (
+          <div className="mb-3">
+            <div className="px-2.5 py-1 text-[10px] font-semibold text-white/20 uppercase tracking-wider">Previous 7 Days</div>
+            <div className="space-y-0.5">
+              {older.map((s) => <SessionItem key={s.id} session={s} />)}
+            </div>
+          </div>
+        )}
+
+        {filtered.length === 0 && (
+          <div className="px-2.5 py-8 text-center text-xs text-white/20">No conversations yet</div>
+        )}
+
+        {/* Nav Links */}
+        <div className="pt-2 pb-1 border-t border-white/5 mt-2">
+          <div className="px-2.5 py-1 text-[10px] font-semibold text-white/20 uppercase tracking-wider">Menu</div>
+          <div className="space-y-0.5 mt-1">
+            {navLinks.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    isActive
+                      ? 'bg-white/10 text-white'
+                      : 'text-white/40 hover:bg-white/5 hover:text-white/70'
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 ${item.color}`} />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="p-3 border-t border-white/5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-[#133863] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+            {user?.avatarInitials || 'U'}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-semibold text-white/70 truncate">{user?.name || 'Officer'}</div>
+            <div className="text-[10px] text-white/30 truncate">{user?.department || 'My Department'}</div>
+          </div>
+          <button onClick={logout} title="Logout" className="text-white/20 hover:text-red-400 transition-colors">
+            <LogOut className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </aside>
   );
 };
+
+export default Sidebar;

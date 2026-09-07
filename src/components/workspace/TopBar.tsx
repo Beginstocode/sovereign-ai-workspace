@@ -1,11 +1,5 @@
 import React from 'react';
-import { 
-  Menu, 
-  Search, 
-  Sun,
-  Moon,
-  Fingerprint
-} from 'lucide-react';
+import { Menu, Sun, Moon, ShieldCheck, Cpu } from 'lucide-react';
 import { Agent } from '../../types';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
@@ -30,80 +24,87 @@ export const TopBar: React.FC<TopBarProps> = ({
   onOpenAgentModal,
   onToggleModelRouter,
   isModelRouterOpen,
-  onToggleActivityDrawer,
-  isActivityDrawerOpen,
   onOpenSecurityModal,
-  onOpenCommandPalette
 }) => {
   const { theme, toggleTheme } = useTheme();
-  const { user, isAuthenticated, openAuthModal } = useAuth();
+  const { user, openAuthModal } = useAuth();
 
   return (
-    <header className="h-14 border-b border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#0A0A0A] dark:bg-[#0A0A0A] light:bg-[#FFFFFF] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 transition-colors font-mono text-xs">
-      {/* Left items: sidebar toggle + active agent pill */}
+    <header className="h-12 border-b border-white/5 bg-[#111111] px-4 flex items-center justify-between font-sans z-30 sticky top-0">
+
+      {/* Left */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="p-1.5 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#F5F5F5] text-[#A3A3A3] hover:text-white dark:hover:text-white light:hover:text-black transition-colors"
+          className="p-1.5 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/5 transition-colors"
           title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          <Menu className="w-3.5 h-3.5" />
+          <Menu className="w-4 h-4" />
         </button>
 
-        {/* Active Agent Selector Trigger */}
         <button
           onClick={onOpenAgentModal}
-          className="flex items-center gap-2 px-2.5 py-1 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#FAFAFA] hover:border-[#525252] transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1A1A1A] border border-white/10 hover:border-white/20 transition-all text-xs"
         >
-          <span className="text-[#F97316] font-semibold">//</span>
-          <span className="font-medium text-white dark:text-white light:text-black">{activeAgent.name}</span>
-          <span className="text-[#737373] text-[10px] hidden sm:inline">({activeAgent.defaultModel.split(' ')[0]})</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#EE7027] animate-pulse" />
+          <span className="text-white/40 font-medium">Agent:</span>
+          <span className="font-semibold text-white/80">{activeAgent.name}</span>
         </button>
       </div>
 
-      {/* Right controls: Router, Security, Theme, Sign In */}
+      {/* Right */}
       <div className="flex items-center gap-2">
-        <button
-          onClick={onToggleModelRouter}
-          className={`px-2.5 py-1 rounded border transition-colors hidden sm:flex items-center gap-1.5 ${
-            isModelRouterOpen
-              ? 'border-white dark:border-white light:border-black bg-white dark:bg-white light:bg-black text-black dark:text-black light:text-white'
-              : 'border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#FAFAFA] text-[#A3A3A3] hover:text-white dark:hover:text-white light:hover:text-black'
-          }`}
-        >
-          <span>GPU VRAM</span>
-        </button>
-
+        {/* Air-gap badge */}
         <button
           onClick={onOpenSecurityModal}
-          className="px-2.5 py-1 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#FAFAFA] text-emerald-400 dark:text-emerald-400 light:text-emerald-700 hidden md:flex items-center gap-1.5"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-semibold hover:bg-emerald-500/15 transition-colors"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span>AIR-GAP</span>
+          <ShieldCheck className="w-3 h-3" />
+          <span>Local</span>
         </button>
 
-        {/* Theme Toggle Button */}
+        {/* GPU */}
+        <button
+          onClick={onToggleModelRouter}
+          className={`hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all ${
+            isModelRouterOpen
+              ? 'border-[#EE7027]/40 bg-[#EE7027]/10 text-[#EE7027]'
+              : 'border-white/10 bg-[#1A1A1A] text-white/40 hover:text-white/70 hover:border-white/20'
+          }`}
+        >
+          <Cpu className="w-3 h-3" />
+          <span>GPU 28%</span>
+        </button>
+
+        {/* Theme toggle */}
         <button
           onClick={toggleTheme}
-          className="p-1.5 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#FAFAFA] text-[#A3A3A3] hover:text-white dark:hover:text-white light:hover:text-black transition-colors"
+          className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
           title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
           {theme === 'dark' ? (
             <Sun className="w-3.5 h-3.5 text-amber-400" />
           ) : (
-            <Moon className="w-3.5 h-3.5 text-slate-700" />
+            <Moon className="w-3.5 h-3.5" />
           )}
         </button>
 
-        {/* Sign In / Profile */}
+        {/* Profile */}
         <button
           onClick={openAuthModal}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#FAFAFA] text-[#D4D4D4] dark:text-[#D4D4D4] light:text-[#525252] hover:text-white dark:hover:text-white light:hover:text-black transition-colors"
+          className="flex items-center gap-2 pl-2 border-l border-white/5"
         >
-          <Fingerprint className="w-3.5 h-3.5 text-[#F97316]" />
-          <span>{isAuthenticated && user ? user.name.split(' ')[0] : 'Sign In'}</span>
+          <div className="w-7 h-7 rounded-full bg-[#133863] text-white flex items-center justify-center font-bold text-[10px]">
+            {user?.avatarInitials || 'U'}
+          </div>
+          <div className="hidden sm:flex flex-col text-left">
+            <span className="text-[11px] font-semibold text-white/70 leading-tight">{user?.name || 'Officer'}</span>
+            <span className="text-[9px] text-[#EE7027]">{user?.clearanceLevel?.split('//')[0].trim() || 'LEVEL 3'}</span>
+          </div>
         </button>
       </div>
     </header>
   );
 };
+
+export default TopBar;

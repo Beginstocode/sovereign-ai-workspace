@@ -19,51 +19,51 @@ export const DEMO_PROFILES: UserProfile[] = [
   // Admin profiles
   {
     id: 'admin-01',
-    name: 'Dr. Val Morrison',
-    email: 'v.morrison@defense.sovereign.local',
+    name: 'Egzai',
+    email: 'egzai@sovereign.local',
     role: 'Chief Infrastructure Administrator',
     roleType: 'admin',
-    department: 'Enterprise Security & GPU Enclave',
+    department: 'Enterprise Security & AI Infrastructure',
     clearanceLevel: 'LEVEL 5 // ROOT DIRECTIVE',
     enclaveNode: 'HSM-Enclave-Alpha',
-    avatarInitials: 'VM',
+    avatarInitials: 'EG',
     permissions: ['Full Root Access', 'Model Weight Quantization', 'Air-Gap Firewall Configuration', 'Vector Store Encryption']
   },
   {
     id: 'admin-02',
-    name: 'Elena Rostova',
-    email: 'e.rostova@systems.sovereign.local',
+    name: 'Prem',
+    email: 'prem@sovereign.local',
     role: 'Lead Security & Enclave Officer',
     roleType: 'admin',
     department: 'Core Infrastructure Security',
     clearanceLevel: 'LEVEL 5 // CRYPTO ROOT',
     enclaveNode: 'Dual-L40S-Node-01',
-    avatarInitials: 'ER',
+    avatarInitials: 'PR',
     permissions: ['Security Audit Logs', 'Hardware Key Lifecycle', 'Zero-Trust Gatekeeper', 'VRAM Allocation']
   },
   // Employee profiles
   {
     id: 'emp-01',
-    name: 'Marcus Vance',
-    email: 'm.vance@operations.sovereign.local',
-    role: 'Senior Plant Operations Engineer',
+    name: 'Satyam',
+    email: 'satyam@sovereign.local',
+    role: 'Senior Operations Engineer',
     roleType: 'employee',
-    department: 'Heavy Turbomachinery Operations',
+    department: 'Operations & Engineering',
     clearanceLevel: 'LEVEL 3 // CERTIFIED OPERATOR',
-    enclaveNode: 'Turbine-Floor-04',
-    avatarInitials: 'MV',
+    enclaveNode: 'Ops-Node-04',
+    avatarInitials: 'ST',
     permissions: ['Inspection Agent Dispatch', 'Document OCR Extraction', 'SOP Querying', 'Approval Note Generation']
   },
   {
     id: 'emp-02',
-    name: 'Sarah Chen',
-    email: 's.chen@finance.sovereign.local',
-    role: 'Lead Quantitative Procurement Analyst',
+    name: 'Shreyansh',
+    email: 'shreyansh@sovereign.local',
+    role: 'Lead Analyst & Procurement',
     roleType: 'employee',
     department: 'Strategic Sourcing & Finance',
     clearanceLevel: 'LEVEL 3 // CONFIDENTIAL',
     enclaveNode: 'Finance-Vlan-02',
-    avatarInitials: 'SC',
+    avatarInitials: 'SH',
     permissions: ['Vendor Quotations Modeling', 'Telemetry Excel Processing', 'Presentation Deck Builder']
   }
 ];

@@ -1,179 +1,195 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
-  ArrowRight, 
+  ShieldCheck, 
+  Lock, 
   Menu, 
   X, 
-  Sun,
-  Moon,
-  Fingerprint
+  Building2, 
+  UserCheck, 
+  ShieldAlert,
+  ArrowRight,
+  Globe,
+  Search
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { useTheme } from '../../context/ThemeContext';
 
 export const Navbar: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, isAuthenticated, openAuthModal } = useAuth();
-  const { theme, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navLinks = [
-    { name: 'Workforce', href: '#workforce' },
-    { name: 'Security', href: '#security' },
-    { name: 'Pipeline', href: '#how-it-works' },
-    { name: 'Multimodal', href: '#multimodal' },
-    { name: 'Evidence', href: '#real-work' },
-    { name: 'Knowledge', href: '#brain' }
+    { name: 'About Sovereign', href: '#about' },
+    { name: 'Capabilities', href: '#why-sovereign' },
+    { name: 'AI Workforce', href: '#workforce' },
+    { name: 'Air-Gap Security', href: '#security' },
+    { name: 'Workflow', href: '#how-it-works' },
+    { name: 'Contact', href: '#contact' }
   ];
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-colors duration-200 ${
-        scrolled
-          ? 'bg-[#0A0A0A]/95 dark:bg-[#0A0A0A]/95 light:bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#262626] dark:border-[#262626] light:border-[#E5E5E5]'
-          : 'bg-[#0A0A0A] dark:bg-[#0A0A0A] light:bg-[#FFFFFF] border-b border-[#1F1F1F] dark:border-[#1F1F1F] light:border-[#E5E5E5]'
-      }`}
-    >
-      {/* Top micro-bar: Snitch style command notice */}
-      <div className="border-b border-[#1F1F1F] dark:border-[#1F1F1F] light:border-[#E5E5E5] px-4 py-1.5 text-[11px] font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#737373] flex items-center justify-between">
-        <div className="flex items-center gap-2 max-w-[1180px] mx-auto w-full">
-          <span className="text-[#F97316] font-semibold">// 08 AGENTS · STRICTLY AIR-GAPPED</span>
-          <span className="hidden md:inline text-[#525252]">·</span>
-          <span className="hidden md:inline text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#737373]">100% on-premise · zero telemetry · verified cited outputs</span>
-          <div className="ml-auto flex items-center gap-3">
-            <span className="text-[10px] hidden sm:inline text-[#737373]">PRESS</span>
-            <kbd className="hidden sm:inline-block px-1.5 py-0.5 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#171717] dark:bg-[#171717] light:bg-[#F5F5F5] text-[10px] text-[#D4D4D4] dark:text-[#D4D4D4] light:text-[#525252]">⌘K</kbd>
-            <span className="text-[#EDEDED] dark:text-[#EDEDED] light:text-[#171717] font-medium hidden sm:inline">PALETTE</span>
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm font-sans">
+      {/* 1. Indian Tricolor Accent Line */}
+      <div className="h-1 w-full bg-gradient-to-r from-[#FF9933] via-white to-[#138808]"></div>
+
+      {/* 2. Official Government-style Top Strip (MyGov Standard) */}
+      <div className="bg-[#0B1B3D] text-slate-200 text-xs px-4 py-1.5 border-b border-blue-900/50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3 text-[11px] font-medium tracking-wide">
+            <span className="font-semibold text-white">भारत सरकार</span>
+            <span className="text-slate-500">|</span>
+            <span className="font-semibold text-white">Government of India</span>
+            <span className="text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-300">Digital India</span>
+            <span className="text-slate-500 hidden sm:inline">|</span>
+            <span className="hidden md:inline text-slate-300">मेरी सरकार (MeriSarkar)</span>
+          </div>
+
+          <div className="flex items-center gap-4 text-[11px]">
+            {/* Accessibility Font Sizing */}
+            <div className="hidden sm:flex items-center gap-1 text-[10px] font-bold text-slate-300">
+              <span className="hover:text-white cursor-pointer">A-</span>
+              <span>|</span>
+              <span className="text-orange-400 cursor-pointer">A</span>
+              <span>|</span>
+              <span className="hover:text-white cursor-pointer">A+</span>
+            </div>
+            <span className="text-slate-500 hidden sm:inline">|</span>
+            <button className="hover:text-white transition-colors flex items-center gap-1 font-medium">
+              <Globe className="w-3 h-3 text-[#FF9933]" />
+              <span>हिन्दी</span>
+            </button>
+            <span className="text-slate-500">|</span>
+            <span className="text-emerald-400 font-semibold flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              Air-Gapped Node #01
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-        {/* Brand Logo - clean editorial typographic lockup */}
-        <Link to="/" className="flex items-baseline gap-2.5 group">
-          <span className="text-sm font-mono font-bold tracking-tight text-white dark:text-white light:text-[#171717] uppercase">
-            SOVEREIGN
-          </span>
-          <span className="text-[11px] font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#737373]">
-            <span className="text-[#F97316]">//</span> enterprise ai os
-          </span>
+      {/* 3. Main Official Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+        {/* Emblem & Brand Lockup */}
+        <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
+          {/* Official Emblem Symbol */}
+          <div className="w-11 h-11 rounded-lg bg-[#133863] text-white flex flex-col items-center justify-center p-1 border border-blue-900 shadow-sm flex-shrink-0">
+            <span className="text-lg">🏛️</span>
+          </div>
+
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-[#133863] font-serif">
+                SOVEREIGN
+              </span>
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-[#EE7027]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#428DCC]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#1DB999]"></span>
+              </div>
+              <span className="text-xs font-bold text-[#EE7027] tracking-wider uppercase font-sans">
+                AI WORKSPACE
+              </span>
+            </div>
+            <span className="text-[11px] text-slate-600 font-medium tracking-tight -mt-0.5">
+              मेरी सरकार • Secure • Private • On-Premise AI for Government & PSUs
+            </span>
+          </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map((link, idx) => (
+        {/* Center Search Bar (MyGov Style) */}
+        <div className="hidden xl:flex items-center relative flex-1 max-w-xs mx-4">
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search circulars, SOPs, AI agents..."
+            className="w-full bg-slate-50 border border-slate-200 rounded-full pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#133863]"
+          />
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-5">
+          {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-xs font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] hover:text-white dark:hover:text-white light:hover:text-[#171717] transition-colors flex items-center gap-1.5"
+              className="text-xs font-semibold text-slate-700 hover:text-[#133863] transition-colors hover:underline underline-offset-4"
             >
-              <span className="text-[#525252] text-[10px]">0{idx + 1}</span>
-              <span>{link.name}</span>
+              {link.name}
             </a>
           ))}
         </nav>
 
-        {/* Right Actions */}
-        <div className="hidden sm:flex items-center gap-3">
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className="p-1.5 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#171717] dark:bg-[#171717] light:bg-[#F5F5F5] text-[#D4D4D4] dark:text-[#D4D4D4] light:text-[#525252] hover:text-white dark:hover:text-white light:hover:text-[#171717] transition-colors"
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        {/* Right Actions: Employee Login & Admin Login */}
+        <div className="hidden sm:flex items-center gap-2.5 flex-shrink-0">
+          <Link
+            to="/login/employee"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white text-[#133863] border border-[#133863] hover:bg-slate-50 text-xs font-bold transition-all shadow-sm"
           >
-            {theme === 'dark' ? (
-              <Sun className="w-3.5 h-3.5 text-amber-400" />
-            ) : (
-              <Moon className="w-3.5 h-3.5 text-slate-700" />
-            )}
-          </button>
+            <UserCheck className="w-3.5 h-3.5 text-[#133863]" />
+            <span>Employee Login</span>
+          </Link>
 
-          <button
-            onClick={openAuthModal}
-            className="text-xs font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] hover:text-white dark:hover:text-white light:hover:text-[#171717] px-2.5 py-1.5 rounded hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-[#F5F5F5] transition-colors flex items-center gap-1.5"
+          <Link
+            to="/login/admin"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#EE7027] hover:bg-[#D65F18] text-white text-xs font-bold transition-all shadow-sm"
           >
-            <Fingerprint className="w-3.5 h-3.5 text-[#F97316]" />
-            <span>{isAuthenticated && user ? user.name.split(' ')[0] : 'Sign In'}</span>
-          </button>
-
-          <button
-            onClick={() => navigate('/workspace')}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded border border-white dark:border-white light:border-[#171717] bg-white dark:bg-white light:bg-[#171717] text-black dark:text-black light:text-white hover:bg-[#EDEDED] dark:hover:bg-[#EDEDED] light:hover:bg-[#262626] text-xs font-mono font-medium transition-colors"
-          >
-            <span>Launch Workspace</span>
-            <ArrowRight className="w-3 h-3" />
-          </button>
+            <Lock className="w-3.5 h-3.5 text-white" />
+            <span>Admin Login</span>
+          </Link>
         </div>
 
-        {/* Mobile menu toggle */}
-        <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={toggleTheme}
-            className="p-1 rounded border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] text-[#A3A3A3] light:text-[#525252]"
+        {/* Mobile menu button */}
+        <div className="flex lg:hidden items-center gap-2">
+          <Link
+            to="/login"
+            className="px-2.5 py-1 rounded bg-[#133863] text-white text-xs font-medium"
           >
-            {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-slate-700" />}
-          </button>
-          <button
-            onClick={() => navigate('/workspace')}
-            className="px-2.5 py-1 rounded bg-white dark:bg-white light:bg-[#171717] text-black dark:text-black light:text-white text-xs font-mono"
-          >
-            Launch →
-          </button>
+            Login
+          </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] hover:text-white dark:hover:text-white light:hover:text-[#171717]"
+            className="p-1.5 text-slate-700 hover:text-black"
           >
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Mobile Nav Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden px-4 pt-2 pb-5 bg-[#0A0A0A] dark:bg-[#0A0A0A] light:bg-[#FFFFFF] border-b border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] space-y-2">
-          {navLinks.map((link, idx) => (
+        <div className="lg:hidden px-4 pt-2 pb-5 bg-white border-t border-slate-200 space-y-2">
+          {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-2 py-1.5 text-xs font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] hover:text-white dark:hover:text-white light:hover:text-[#171717] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-[#F5F5F5] rounded"
+              className="block px-2 py-1.5 text-xs font-semibold text-slate-700 hover:text-[#133863] hover:bg-slate-50 rounded"
             >
-              <span className="text-[#F97316] mr-2">0{idx + 1}</span>
               {link.name}
             </a>
           ))}
-          <div className="pt-2 border-t border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] flex flex-col gap-2">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                openAuthModal();
-              }}
-              className="flex items-center gap-2 text-xs font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] px-2 py-1.5 rounded hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-[#F5F5F5]"
+          <div className="pt-3 border-t border-slate-200 grid grid-cols-2 gap-2">
+            <Link
+              to="/login/employee"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-2 text-center text-xs font-semibold rounded border border-[#133863] text-[#133863]"
             >
-              <Fingerprint className="w-3.5 h-3.5 text-[#F97316]" />
-              <span>{isAuthenticated && user ? user.name : 'Sign In'}</span>
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                navigate('/workspace');
-              }}
-              className="w-full py-2 bg-white dark:bg-white light:bg-[#171717] text-black dark:text-black light:text-white text-xs font-mono font-medium rounded text-center"
+              Employee Login
+            </Link>
+            <Link
+              to="/login/admin"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-2 text-center text-xs font-semibold rounded bg-[#EE7027] text-white"
             >
-              Launch Workspace →
-            </button>
+              Admin Login
+            </Link>
           </div>
         </div>
       )}
     </header>
   );
 };
+
+export default Navbar;

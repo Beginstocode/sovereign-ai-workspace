@@ -1,115 +1,166 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ArrowRight
+  FileText, 
+  Compass, 
+  BarChart3, 
+  Code2, 
+  ShieldCheck, 
+  Coins, 
+  Users, 
+  Presentation,
+  ArrowRight,
+  Cpu
 } from 'lucide-react';
-import { AGENTS } from '../../data/agents';
 
 export const WorkforceSection: React.FC = () => {
   const navigate = useNavigate();
 
-  const getAgentTagline = (id: string) => {
-    switch (id) {
-      case 'inspection-agent': return 'your compliance & NDT back';
-      case 'data-analyst': return 'your numbers & models';
-      case 'software-engineer': return 'your code & sandbox';
-      case 'presentation-agent': return 'your executive story';
-      case 'legal-compliance': return 'your policy & clauses';
-      case 'operations-manager': return 'your shop floor rhythm';
-      case 'finance-analyst': return 'your margin & spend';
-      case 'hr-partner': return 'your team & talent';
-      default: return 'your specialist';
+  const assistants = [
+    {
+      id: 'document-analyst',
+      name: 'Document Assistant',
+      role: 'Official Files & Reports',
+      desc: 'Analyse PDFs, ministerial correspondence, policies, and multi-page government circulars with precise citations.',
+      icon: <FileText className="w-5 h-5 text-[#0E2A5C]" />,
+      tools: ['Surya OCR Engine', 'Vector Knowledge Store', 'Summary Generator']
+    },
+    {
+      id: 'engineering-assistant',
+      name: 'Engineering Assistant',
+      role: 'PSU & Plant Engineering',
+      desc: 'Verify technical drawings, AutoCAD schematics, equipment tolerance thresholds, and plant overhaul specifications.',
+      icon: <Compass className="w-5 h-5 text-orange-600" />,
+      tools: ['CAD Vector Parser', 'Formula Verifier', 'Technical Standards RAG']
+    },
+    {
+      id: 'data-analyst',
+      name: 'Data Analyst',
+      role: 'Operational & Survey Analytics',
+      desc: 'Ingest and compute statistical tables, national survey numbers, telemetry series, and generate dynamic Excel workbooks.',
+      icon: <BarChart3 className="w-5 h-5 text-emerald-700" />,
+      tools: ['Local Python Sandbox', 'CSV/Excel Parser', 'Chart Generator']
+    },
+    {
+      id: 'software-engineer',
+      name: 'Software Engineer',
+      role: 'Code & Systems Architecture',
+      desc: 'Write, audit, debug and test mission-critical code inside secure air-gapped sandboxes without internet connection.',
+      icon: <Code2 className="w-5 h-5 text-blue-700" />,
+      tools: ['Isolated WASM Sandbox', 'Security Scanner', 'Static Analysis Engine']
+    },
+    {
+      id: 'inspection-agent',
+      name: 'Inspection Assistant',
+      role: 'Quality & Safety Compliance',
+      desc: 'Evaluate ultrasonic thickness surveys, non-destructive testing audits, and compile formal ISO/BIS approval notes.',
+      icon: <ShieldCheck className="w-5 h-5 text-emerald-700" />,
+      tools: ['Visual Defect OCR', 'Rulebook Compliance Check', 'Approval .docx Generator']
+    },
+    {
+      id: 'finance-assistant',
+      name: 'Finance Assistant',
+      role: 'Procurement & GeM Tender Scoring',
+      desc: 'Normalize vendor quotations, compare life-cycle TCO bids, and verify invoice totals against sanctioned procurement limits.',
+      icon: <Coins className="w-5 h-5 text-indigo-700" />,
+      tools: ['Tender Evaluator', 'Spreadsheet Engine', 'Vendor Comparison Matrix']
+    },
+    {
+      id: 'hr-assistant',
+      name: 'HR Assistant',
+      role: 'Establishment & Service Rules',
+      desc: 'Draft service rules, seniority notifications, departmental inquiry notes, and verify compliance with Central Civil Services rules.',
+      icon: <Users className="w-5 h-5 text-amber-700" />,
+      tools: ['CCS Rules Index', 'Redaction Anonymizer', 'Circular Drafting Assistant']
+    },
+    {
+      id: 'presentation-agent',
+      name: 'Presentation Assistant',
+      role: 'Cabinet & Parliamentary Briefings',
+      desc: 'Transform voluminous operational and inspection records into concise executive slide presentations for leadership reviews.',
+      icon: <Presentation className="w-5 h-5 text-purple-700" />,
+      tools: ['Slide Storyboarder', 'Direct PPTX Builder', 'Executive Summary Formatter']
     }
-  };
+  ];
 
-  const getAgentQuestion = (id: string) => {
-    switch (id) {
-      case 'inspection-agent': return 'Can this asset survive the next overhaul without structural fatigue?';
-      case 'data-analyst': return 'What do 4 million telemetry rows say that your dashboard missed?';
-      case 'software-engineer': return 'Did the AI write code that leaks sockets or deadlocks in production?';
-      case 'presentation-agent': return 'How do you turn 50 pages of raw technical audits into 8 boardroom slides?';
-      case 'legal-compliance': return 'Does this supplier contract violate section 14 of your corporate charter?';
-      case 'operations-manager': return 'Where is the maintenance backlog bleeding shift productivity?';
-      case 'finance-analyst': return 'Which vendor quotation actually costs less once payment schedules normalize?';
-      case 'hr-partner': return 'Is the internal promotion rubric compliant with national labor standards?';
-      default: return 'How do we solve this?';
-    }
-  };
-
-  const handleSelectAgent = (agentId: string) => {
+  const handleSelectAssistant = (agentId: string) => {
     navigate('/workspace', { state: { selectedAgentId: agentId } });
   };
 
   return (
-    <section id="workforce" className="py-20 border-b border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] transition-colors">
-      {/* Editorial Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <div className="text-xs font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#737373] mb-2">
-            <span className="text-[#F97316] font-semibold">// 02 WORKFORCE</span> — EIGHT DOMAIN SPECIALISTS
+    <section id="workforce" className="py-20 bg-white border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded border border-blue-200 bg-blue-50 text-[#0E2A5C] text-xs font-semibold mb-3">
+            <Cpu className="w-3.5 h-3.5 text-blue-700" />
+            <span>Specialized Domain Software Modules</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white dark:text-white light:text-[#171717] tracking-tight">
-            A specialist for every role. Each with its own evidence standard.
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B1B3D] font-serif">
+            One Platform. Multiple AI Assistants.
           </h2>
+          <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed font-sans">
+            Rather than a single unverified chatbot, Sovereign deploys dedicated enterprise modules calibrated for specific administrative, engineering, and financial domains.
+          </p>
         </div>
-      </div>
 
-      <p className="text-sm sm:text-base text-[#D4D4D4] dark:text-[#D4D4D4] light:text-[#525252] leading-relaxed max-w-3xl mb-10">
-        General chatbots pretend to know everything and cite nothing. Sovereign routes your task to a 
-        dedicated domain specialist tuned for specific document structures, standard operating procedures, 
-        and deterministic tools.
-      </p>
+        {/* Professional Government Software Module Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {assistants.map((assistant) => (
+            <div
+              key={assistant.id}
+              className="p-5 rounded-lg border border-slate-200 bg-white shadow-sm hover:border-[#0E2A5C] hover:shadow transition-all flex flex-col justify-between text-left"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded bg-slate-50 border border-slate-200">
+                    {assistant.icon}
+                  </div>
+                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+                    {assistant.role}
+                  </span>
+                </div>
 
-      {/* Snitch-style Skills List / Index */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        {AGENTS.map((agent, idx) => (
-          <div
-            key={agent.id}
-            onClick={() => handleSelectAgent(agent.id)}
-            className="group cursor-pointer p-5 rounded-lg border border-[#262626] dark:border-[#262626] light:border-[#E5E5E5] bg-[#141414] dark:bg-[#141414] light:bg-[#FFFFFF] hover:border-[#404040] dark:hover:border-[#404040] light:hover:border-[#D4D4D4] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-[#F9F9F9] transition-all flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-2 font-mono text-xs text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#737373]">
-                <span>
-                  <span className="text-[#F97316] font-bold">// 0{idx + 1}</span> {agent.name}
-                </span>
-                <span className="text-[#D4D4D4] dark:text-[#D4D4D4] light:text-[#525252] group-hover:text-white dark:group-hover:text-white light:group-hover:text-[#171717] transition-colors">
-                  {getAgentTagline(agent.id)} →
-                </span>
+                <h3 className="text-sm font-bold text-slate-900 mb-1 font-serif">
+                  {assistant.name}
+                </h3>
+
+                <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                  {assistant.desc}
+                </p>
+
+                {/* Available Tools */}
+                <div className="space-y-1 mb-4">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                    Available Tools:
+                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {assistant.tools.map((t, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-0.5 rounded bg-slate-100 text-[10px] text-slate-700 border border-slate-200"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <h3 className="text-sm font-bold text-white dark:text-white light:text-[#171717] mb-2 leading-snug">
-                "{getAgentQuestion(agent.id)}"
-              </h3>
-
-              <p className="text-xs text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#525252] leading-relaxed mb-4">
-                {agent.description}
-              </p>
+              {/* Action Button */}
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-[10px] font-medium text-emerald-700">Air-Gapped</span>
+                <button
+                  onClick={() => handleSelectAssistant(assistant.id)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#0E2A5C] hover:underline"
+                >
+                  <span>Open Agent</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
-
-            <div className="pt-3 border-t border-[#262626] dark:border-[#262626] light:border-[#F5F5F5] flex items-center justify-between text-[11px] font-mono text-[#A3A3A3] dark:text-[#A3A3A3] light:text-[#737373]">
-              <span className="text-[#D4D4D4] dark:text-[#D4D4D4] light:text-[#404040]">{agent.defaultModel}</span>
-              <span className="text-emerald-400 dark:text-emerald-400 light:text-emerald-700 bg-emerald-950/60 dark:bg-emerald-950/60 light:bg-emerald-50 px-2 py-0.5 rounded border border-emerald-800/40 dark:border-emerald-800/40 light:border-emerald-200">
-                LOCAL ENCLAVE
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Router Recommendation Box */}
-      <div className="p-4 rounded-lg border border-[#333333] dark:border-[#333333] light:border-[#D4D4D4] bg-[#141414] dark:bg-[#141414] light:bg-[#F5F5F5] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono">
-        <div>
-          <span className="text-[#F97316] font-bold">// 00 AUTO ROUTER:</span>
-          <span className="text-[#D4D4D4] dark:text-[#D4D4D4] light:text-[#404040] ml-2">Not sure which agent fits? Just describe your task — the router picks the right one.</span>
+          ))}
         </div>
-        <button
-          onClick={() => navigate('/workspace')}
-          className="text-white dark:text-white light:text-[#171717] font-semibold hover:underline flex-shrink-0 flex items-center gap-1"
-        >
-          <span>Open Workspace Router</span>
-          <ArrowRight className="w-3 h-3" />
-        </button>
       </div>
     </section>
   );

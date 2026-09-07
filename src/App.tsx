@@ -7,6 +7,7 @@ import { AuthModal } from './components/common/AuthModal';
 import { LandingPage } from './pages/LandingPage';
 import { WorkspacePage } from './pages/WorkspacePage';
 import { LoginPage } from './pages/LoginPage';
+import { AdminPortalPage } from './pages/AdminPortalPage';
 import { AgentsPage } from './pages/AgentsPage';
 import { DocumentsPage } from './pages/DocumentsPage';
 import { KnowledgePage } from './pages/KnowledgePage';
@@ -21,22 +22,27 @@ export const App: React.FC = () => {
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          {/* Global Enclave Authentication Modal */}
+          {/* Quick Enclave Switch Modal */}
           <AuthModal />
 
           <Routes>
-            {/* Landing Page */}
+            {/* Landing Page - Indian Government / PSU Digital Service Portal Style */}
             <Route path="/" element={<LandingPage />} />
 
-            {/* Dedicated Authentication Route */}
+            {/* Dedicated Authentication Routes */}
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/login/employee" element={<LoginPage initialRole="employee" />} />
+            <Route path="/login/admin" element={<LoginPage initialRole="admin" />} />
 
-            {/* Operating System Workspace & Chat */}
+            {/* Admin Portal Dashboard */}
+            <Route path="/admin" element={<AdminPortalPage />} />
+
+            {/* Operating System Workspace & Chat (ChatGPT-Clean Style) */}
             <Route path="/workspace" element={<WorkspacePage />} />
             <Route path="/chat" element={<WorkspacePage />} />
             <Route path="/chat/:id" element={<WorkspacePage />} />
 
-            {/* Enterprise Views */}
+            {/* Enterprise & Government Sections */}
             <Route path="/agents" element={<AgentsPage />} />
             <Route path="/documents" element={<DocumentsPage />} />
             <Route path="/knowledge" element={<KnowledgePage />} />
